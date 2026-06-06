@@ -5,6 +5,7 @@ import (
 
 	"WebhookFlow/internal/config"
 	"WebhookFlow/internal/database"
+	"WebhookFlow/internal/repository"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,9 @@ func main() {
 	cfg := config.Load()
 
 	db := database.NewPostgresPool(cfg)
+	orderRepo := repository.NewOrderRepository(db)
+
+	seedOrder(orderRepo)
 	defer db.Close()
 
 	router := gin.Default()
